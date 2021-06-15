@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jingle</string>
+    <string name="Home">Home</string>
+    <string name="Library">Library</string>
+    <string name="Search">Search</string>
+</resources>

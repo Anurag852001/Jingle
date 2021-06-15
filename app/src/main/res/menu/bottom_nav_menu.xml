@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cnb_unselectedColor="#666666"
+    >
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="@string/Search"
+        app:cnb_iconColor="@color/search_color" />
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/Home"
+        app:cnb_iconColor="@color/home_color" />
+    <item
+        android:id="@+id/nav_library"
+        android:icon="@drawable/ic_baseline_library_music_24"
+        android:title="@string/Library"
+        app:cnb_iconColor="@color/library_color" />
+</menu>
