@@ -25,19 +25,19 @@ import kotlin.time.toDuration
 
 class song_viewer : AppCompatActivity()  {
 
-        private val listSongs=ArrayList<SongInfo>()
+    private val listSongs=ArrayList<SongInfo>()
 
-        lateinit var runnable: Runnable
-        private var handler = Handler()
+    lateinit var runnable: Runnable
+    private var handler = Handler()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_song_viewer)
-       loadSongs()
+        loadSongs()
         val mp= MediaPlayer()
         val playbutton=findViewById<ImageButton>(R.id.play_button)
-    var position =intent.getIntExtra("position",0)
+        var position =intent.getIntExtra("position",0)
 
 
 
@@ -55,9 +55,10 @@ class song_viewer : AppCompatActivity()  {
         mp.setDataSource(listSongs[position].url)
         songName.text=listSongs[position].title
         author.text=listSongs[position].author
-        seekBar.progress=0
-        seekBar.max=listSongs[position].duration!!.toInt()
         mp.prepare()
+        seekBar.progress=0
+        seekBar.max=mp.duration
+
         mp.start()
 
 
@@ -91,8 +92,9 @@ class song_viewer : AppCompatActivity()  {
             songName.text=listSongs[position].title
             author.text=listSongs[position].author
             seekBar.progress=0
-            seekBar.max=listSongs[position].duration!!.toInt()
+
             mp.prepare()
+            seekBar.max=mp.duration
             mp.start()
         }
         previousButton.setOnClickListener {
@@ -108,9 +110,9 @@ class song_viewer : AppCompatActivity()  {
         }
         seekBar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, pos: Int, changed: Boolean) {
-             if(changed) {
-                 mp.seekTo(pos)
-             }
+                if(changed) {
+                    mp.seekTo(pos)
+                }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -124,10 +126,10 @@ class song_viewer : AppCompatActivity()  {
         })
         runnable= Runnable {
             seekBar.progress=mp.currentPosition
-            handler.postDelayed(runnable,1000)
+            handler.postDelayed(runnable,0)
 
         }
-        handler.postDelayed(runnable,1000 )
+        handler.postDelayed(runnable,500)
         mp.setOnCompletionListener {
             playbutton.setImageResource(R.drawable.play_button)
             seekBar.progress=0
@@ -159,6 +161,5 @@ class song_viewer : AppCompatActivity()  {
 
 
     }}
-
 
 
