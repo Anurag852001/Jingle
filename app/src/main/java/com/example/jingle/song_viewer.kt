@@ -2,25 +2,22 @@ package com.example.jingle
 
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
+
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.os.Parcel
-import android.os.Parcelable
+
 import android.provider.MediaStore
-import android.renderscript.Sampler
+
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.example.jingle.fragments.home
-import java.util.concurrent.TimeUnit
+
 import kotlin.time.ExperimentalTime
-import kotlin.time.toDuration
+
 
 
 class song_viewer : AppCompatActivity()  {
@@ -48,7 +45,7 @@ class song_viewer : AppCompatActivity()  {
         val repeatButton=findViewById<ImageButton>(R.id.repeatButton)
         val songName=findViewById<TextView>(R.id.song_name)
         val author=findViewById<TextView>(R.id.singer_name)
-        val seekBar=findViewById<SeekBar>(R.id.SeekBar)
+        val seekBar=findViewById<SeekBar>(R.id.seekBar)
         val backButton=findViewById<ImageView>(R.id.back_button)
 
 
@@ -63,8 +60,8 @@ class song_viewer : AppCompatActivity()  {
 
 
         backButton.setOnClickListener{
+            mp.release()
             val intent=Intent(this, MainActivity::class.java)
-            mp.stop()
             startActivity(intent)
 
 
@@ -92,7 +89,7 @@ class song_viewer : AppCompatActivity()  {
             songName.text=listSongs[position].title
             author.text=listSongs[position].author
             seekBar.progress=0
-
+            playbutton.setImageResource(R.drawable.pause_button)
             mp.prepare()
             seekBar.max=mp.duration
             mp.start()
@@ -104,32 +101,44 @@ class song_viewer : AppCompatActivity()  {
             songName.text=listSongs[position].title
             author.text=listSongs[position].author
             seekBar.progress=0
-            seekBar.max=mp.duration
             mp.prepare()
+            playbutton.setImageResource(R.drawable.pause_button)
+            seekBar.max=mp.duration
             mp.start()
         }
-        seekBar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
-            override fun onProgressChanged(seekBar: SeekBar?, pos: Int, changed: Boolean) {
-                if(changed) {
-                    mp.seekTo(pos)
-                }
-            }
+        repeatButton.setOnClickListener {
+            if(!mp.isLooping) {
+                mp.isLooping = true
 
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                TODO("Not yet implemented")
+                repeatButton.background=resources.getDrawable(R.drawable.drawable_play)
             }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                TODO("Not yet implemented")
+            else {
+                mp.isLooping=false
+                repeatButton.setBackgroundColor(resources.getColor(R.color.black))
             }
-
-        })
+            }
         runnable= Runnable {
             seekBar.progress=mp.currentPosition
             handler.postDelayed(runnable,0)
 
         }
-        handler.postDelayed(runnable,500)
+         seekBar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if(fromUser)
+                    mp.seekTo(progress)
+            }
+
+       override fun onStartTrackingTouch(seekBar: SeekBar?) {
+           mp.pause()
+       }
+
+       override fun onStopTrackingTouch(seekBar: SeekBar?) {
+           mp.start()
+       }})
+
+
+
+       handler.postDelayed(runnable,500)
         mp.setOnCompletionListener {
             playbutton.setImageResource(R.drawable.play_button)
             seekBar.progress=0
