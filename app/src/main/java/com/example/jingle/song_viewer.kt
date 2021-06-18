@@ -140,8 +140,15 @@ class song_viewer : AppCompatActivity()  {
 
        handler.postDelayed(runnable,500)
         mp.setOnCompletionListener {
-            playbutton.setImageResource(R.drawable.play_button)
             seekBar.progress=0
+            position++
+            mp.reset()
+            playbutton.setImageResource(R.drawable.pause_button)
+            songName.text=listSongs[position].title
+            author.text=listSongs[position].author
+            mp.setDataSource(listSongs[position].url)
+            mp.prepare()
+            mp.start()
         }
 
 
@@ -151,15 +158,15 @@ class song_viewer : AppCompatActivity()  {
 
     @OptIn(ExperimentalTime::class)
     private fun loadSongs() {
-        var uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-        var selection: String = MediaStore.Audio.Media.IS_MUSIC + "!=0"
-        var c = this.contentResolver.query(uri, null, selection, null, null)
+        val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        val selection: String = MediaStore.Audio.Media.IS_MUSIC + "!=0"
+        val c = this.contentResolver.query(uri, null, selection, null, null)
         if (c != null) {
             while (c.moveToNext()) {
-                var url = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DATA))
-                var author = c.getString((c.getColumnIndex(MediaStore.Audio.Media.ARTIST)))
-                var title = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
-                var duration=c.getInt(c.getColumnIndex(MediaStore.Audio.Media.DURATION))
+                val url = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DATA))
+                val author = c.getString((c.getColumnIndex(MediaStore.Audio.Media.ARTIST)))
+                val title = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
+                val duration=c.getInt(c.getColumnIndex(MediaStore.Audio.Media.DURATION))
                 listSongs.add(SongInfo(url, author, title,duration))
             }
         }
