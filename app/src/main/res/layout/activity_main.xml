@@ -18,23 +18,113 @@
         android:background="@drawable/drawable_bg"
         android:elevation="16dp"
 
+
         android:foregroundGravity="center"
         android:outlineSpotShadowColor="#EF0D0D"
         app:cnb_menuResource="@menu/bottom_nav_menu"
+        app:cnb_orientationMode="horizontal"
+
+
         app:cnb_radius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/iv_play"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/bottom_nav_bar">
+
+        />
+
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/iv_play"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:background="@drawable/drawable_bg"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:background="#000000"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/iv_play_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/drawable_iv_play"
+        android:src="@drawable/play_button"
+        app:layout_constraintBottom_toBottomOf="@id/iv_play"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_play" />
+
+    <ImageButton
+        android:id="@+id/iv_next_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/drawable_iv_next_previous"
+        android:rotation="180"
+        android:src="@drawable/previous_button"
+        app:layout_constraintBottom_toBottomOf="@id/iv_play"
+        app:layout_constraintStart_toEndOf="@+id/iv_play_button"
+        app:layout_constraintTop_toTopOf="@id/iv_play" />
+
+    <TextView
+        android:id="@+id/iv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_sans_light_italic"
+        android:text="FRIENDS"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_play"
+
+
+        app:layout_constraintStart_toStartOf="@+id/iv_author"
+        app:layout_constraintTop_toTopOf="@id/iv_play"
+        app:layout_constraintVertical_bias="0.22000003" />
+
+    <TextView
+        android:id="@+id/iv_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alegreya_sans_light_italic"
+        android:text="Anne Marie and Marshmello"
+        android:textColor="#A38787"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_play"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.34"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_title"
+        app:layout_constraintVertical_bias="0.050000012" />
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/poster_view"
+       app:layout_constraintRight_toLeftOf="@id/iv_author"
+        app:layout_constraintTop_toTopOf="@id/iv_play"
+        app:layout_constraintBottom_toBottomOf="@id/iv_play"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

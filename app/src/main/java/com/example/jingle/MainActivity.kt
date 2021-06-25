@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(),SongClicked {
         }
 
 
-        }
+    }
 
 
 

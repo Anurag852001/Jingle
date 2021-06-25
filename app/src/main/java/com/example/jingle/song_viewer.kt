@@ -15,6 +15,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import kotlin.concurrent.thread
 
 import kotlin.time.ExperimentalTime
 
@@ -26,15 +27,20 @@ class song_viewer : AppCompatActivity()  {
 
     lateinit var runnable: Runnable
     private var handler = Handler()
+    lateinit var mp: MediaPlayer
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle? ) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_song_viewer)
+
+
+
+
         loadSongs()
-        val mp= MediaPlayer()
+         mp= MediaPlayer()
         val playbutton=findViewById<ImageButton>(R.id.play_button)
-        var position =intent.getIntExtra("position",0)
+        var position =intent.getIntExtra("position",1)
 
 
 
@@ -47,6 +53,10 @@ class song_viewer : AppCompatActivity()  {
         val author=findViewById<TextView>(R.id.singer_name)
         val seekBar=findViewById<SeekBar>(R.id.seekBar)
         val backButton=findViewById<ImageView>(R.id.back_button)
+        val startTime=findViewById<TextView>(R.id.start_time)
+        val endTime=findViewById<TextView>(R.id.end_time)
+
+
 
 
         mp.setDataSource(listSongs[position].url)
@@ -55,12 +65,13 @@ class song_viewer : AppCompatActivity()  {
         mp.prepare()
         seekBar.progress=0
         seekBar.max=mp.duration
-
+        startTime.text= startTime()
+        endTime.text=endTime(mp.duration)
         mp.start()
 
 
         backButton.setOnClickListener{
-            mp.release()
+
             val intent=Intent(this, MainActivity::class.java)
             startActivity(intent)
 
@@ -90,8 +101,11 @@ class song_viewer : AppCompatActivity()  {
             author.text=listSongs[position].author
             seekBar.progress=0
             playbutton.setImageResource(R.drawable.pause_button)
+
             mp.prepare()
             seekBar.max=mp.duration
+            startTime.text= startTime()
+            endTime.text=endTime(mp.duration)
             mp.start()
         }
         previousButton.setOnClickListener {
@@ -102,6 +116,8 @@ class song_viewer : AppCompatActivity()  {
             author.text=listSongs[position].author
             seekBar.progress=0
             mp.prepare()
+            startTime.text= startTime()
+            endTime.text=endTime(mp.duration)
             playbutton.setImageResource(R.drawable.pause_button)
             seekBar.max=mp.duration
             mp.start()
@@ -116,29 +132,32 @@ class song_viewer : AppCompatActivity()  {
                 mp.isLooping=false
                 repeatButton.setBackgroundColor(resources.getColor(R.color.black))
             }
-            }
+        }
         runnable= Runnable {
             seekBar.progress=mp.currentPosition
             handler.postDelayed(runnable,0)
 
         }
-         seekBar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
+        seekBar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if(fromUser)
                     mp.seekTo(progress)
+
+                startTime.text=endTime(progress)
+
             }
 
-       override fun onStartTrackingTouch(seekBar: SeekBar?) {
-           mp.pause()
-       }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                mp.pause()
+            }
 
-       override fun onStopTrackingTouch(seekBar: SeekBar?) {
-           mp.start()
-       }})
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                mp.start()
+            }})
 
 
 
-       handler.postDelayed(runnable,500)
+        handler.postDelayed(runnable,500)
         mp.setOnCompletionListener {
             seekBar.progress=0
             position++
@@ -156,11 +175,30 @@ class song_viewer : AppCompatActivity()  {
 
 
 
+    private fun endTime(duration: Int): String {
+
+        val seconds=duration/1000
+        val minutes=seconds/60
+        val reascends = seconds-minutes*60
+
+        if(reascends/10==0)
+            return "$minutes:0$reascends"
+
+        return "$minutes:$reascends"
+
+    }
+
+
+    private fun startTime(): String {
+        return "0:00"
+    }
+
+
     @OptIn(ExperimentalTime::class)
     private fun loadSongs() {
         val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val selection: String = MediaStore.Audio.Media.IS_MUSIC + "!=0"
-        val c = this.contentResolver.query(uri, null, selection, null, null)
+        val c = this.contentResolver.query(uri, null, selection, null, "TITLE ASC")
         if (c != null) {
             while (c.moveToNext()) {
                 val url = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DATA))
@@ -169,6 +207,7 @@ class song_viewer : AppCompatActivity()  {
                 val duration=c.getInt(c.getColumnIndex(MediaStore.Audio.Media.DURATION))
                 listSongs.add(SongInfo(url, author, title,duration))
             }
+
         }
 
 
@@ -176,6 +215,16 @@ class song_viewer : AppCompatActivity()  {
 
 
 
-    }}
+    }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+       
+    }
+
+
+
+}
 
 

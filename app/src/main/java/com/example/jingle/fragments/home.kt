@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 
 
 import androidx.core.content.ContextCompat
@@ -23,34 +24,51 @@ import com.example.jingle.*
 
 class home : Fragment(), SongClicked {
 
-        private var listSongs= ArrayList<SongInfo>()
+    private var listSongs= ArrayList<SongInfo>()
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        }
+    }
 
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            // Inflate the layout for this fragment
-            val view = inflater.inflate(R.layout.fragment_home, container, false)
-            val thisContext=view.getContext()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        val thisContext=view.getContext()
 
-            if(ContextCompat.checkSelfPermission(thisContext,android.Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)
-            {
+        if(ContextCompat.checkSelfPermission(thisContext,android.Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)
+        {
             loadSongs()
-            }
-            else requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),1)
-
-            val recyclerView:RecyclerView=view.findViewById(R.id.songs_list)
-            recyclerView.layoutManager= LinearLayoutManager(thisContext)
-            val adapter:SongListAdapter= SongListAdapter(listSongs,this)
-            recyclerView.adapter=adapter
-
-            return view
         }
+        else requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),1)
+        val searchView=view.findViewById<SearchView>(R.id.searchView)
+        val recyclerView:RecyclerView=view.findViewById(R.id.songs_list)
+        recyclerView.layoutManager= LinearLayoutManager(thisContext)
+        val adapter:SongListAdapter= SongListAdapter(listSongs,this)
+        recyclerView.adapter=adapter
+
+
+        searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+
+                adapter.filter.filter(newText)
+                return false
+
+            }
+
+
+        })
+
+        return view
+    }
 
 
 
@@ -82,23 +100,18 @@ class home : Fragment(), SongClicked {
 
         if(grantResults[0]==PackageManager.PERMISSION_GRANTED && requestCode==1)
         {
-           loadSongs()
+            loadSongs()
         }
 
     }
 
     override fun onItemClicked(item: String,url:String,position: Int) {
         super.onItemClicked(item,url,position)
-       val intent = Intent(requireContext(),song_viewer::class.java)
+        val intent = Intent(requireContext(),song_viewer::class.java)
 
+        intent.putExtra("list",listSongs)
         intent.putExtra("position",position)
         startActivity(intent)
     }
 
 }
-
-
-
-
-
-

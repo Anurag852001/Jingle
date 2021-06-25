@@ -18,5 +18,6 @@
         android:id="@+id/nav_library"
         android:icon="@drawable/ic_baseline_library_music_24"
         android:title="@string/Library"
+        
         app:cnb_iconColor="@color/library_color" />
 </menu>

@@ -16,7 +16,7 @@
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:text="Item no"
-    android:fontFamily="@font/font3"
+        android:fontFamily="@font/font3"
         android:textSize="18sp"
         android:textColor="@color/white"
         android:background="@color/black"
