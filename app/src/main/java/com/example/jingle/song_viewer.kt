@@ -2,23 +2,18 @@ package com.example.jingle
 
 
 import android.content.Intent
-
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-
 import android.provider.MediaStore
-
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.TextView
-import kotlin.concurrent.thread
-
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import java.io.ByteArrayInputStream
+import java.io.InputStream
 import kotlin.time.ExperimentalTime
-
 
 
 class song_viewer : AppCompatActivity()  {
@@ -55,13 +50,16 @@ class song_viewer : AppCompatActivity()  {
         val backButton=findViewById<ImageView>(R.id.back_button)
         val startTime=findViewById<TextView>(R.id.start_time)
         val endTime=findViewById<TextView>(R.id.end_time)
+        val songImage=findViewById<ImageView>(R.id.song_image)
+        val mmr=MediaMetadataRetriever()
 
-
-
+        loadImage(mmr,position,songImage)
 
         mp.setDataSource(listSongs[position].url)
-        songName.text=listSongs[position].title
+
         author.text=listSongs[position].author
+        songName.text=listSongs[position].title
+
         mp.prepare()
         seekBar.progress=0
         seekBar.max=mp.duration
@@ -103,6 +101,7 @@ class song_viewer : AppCompatActivity()  {
             playbutton.setImageResource(R.drawable.pause_button)
 
             mp.prepare()
+            loadImage(mmr,position,songImage)
             seekBar.max=mp.duration
             startTime.text= startTime()
             endTime.text=endTime(mp.duration)
@@ -116,6 +115,7 @@ class song_viewer : AppCompatActivity()  {
             author.text=listSongs[position].author
             seekBar.progress=0
             mp.prepare()
+            loadImage(mmr,position,songImage)
             startTime.text= startTime()
             endTime.text=endTime(mp.duration)
             playbutton.setImageResource(R.drawable.pause_button)
@@ -203,8 +203,11 @@ class song_viewer : AppCompatActivity()  {
             while (c.moveToNext()) {
                 val url = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DATA))
                 val author = c.getString((c.getColumnIndex(MediaStore.Audio.Media.ARTIST)))
-                val title = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
-                val duration=c.getInt(c.getColumnIndex(MediaStore.Audio.Media.DURATION))
+
+                var title = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
+                var duration=c.getInt(c.getColumnIndex(MediaStore.Audio.Media.DURATION))
+
+
                 listSongs.add(SongInfo(url, author, title,duration))
             }
 
@@ -218,11 +221,18 @@ class song_viewer : AppCompatActivity()  {
     }
 
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-       
+private fun loadImage(mmr: MediaMetadataRetriever, position:Int,songImage:ImageView)
+{
+    mmr.setDataSource(listSongs[position].url)
+    val artBytes: ByteArray? = mmr.embeddedPicture
+    if (artBytes != null) {
+        val image = ByteArrayInputStream(mmr.embeddedPicture)
+        val bm = BitmapFactory.decodeStream(image)
+        songImage.setImageBitmap(bm)
+    } else {
+        songImage.setImageDrawable(resources.getDrawable(R.drawable.poster_view))
     }
-
+}
 
 
 }

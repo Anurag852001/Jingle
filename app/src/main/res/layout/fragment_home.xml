@@ -16,17 +16,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/black"/>
+
     <SearchView
         android:id="@+id/searchView"
-        android:layout_width="0dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:background="@color/primary_dark"
+        android:background="@drawable/buttons_bg"
         android:iconifiedByDefault="false"
+
         android:queryHint="Search song name etc"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-      >
+        app:layout_constraintTop_toTopOf="@+id/songs_list"
+        app:layout_constraintVertical_bias="0.01999998">
 
     </SearchView>
 

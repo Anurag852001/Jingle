@@ -6,125 +6,131 @@
     android:layout_height="match_parent"
     android:background="#fff"
     android:focusable="auto"
-    android:outlineSpotShadowColor="#390A0A"
+    android:outlineSpotShadowColor="#00390A0A"
     tools:context=".MainActivity">
-
-
-    <com.ismaeldivita.chipnavigation.ChipNavigationBar
-        android:id="@+id/bottom_nav_bar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-
-        android:background="@drawable/drawable_bg"
-        android:elevation="16dp"
-
-
-        android:foregroundGravity="center"
-        android:outlineSpotShadowColor="#EF0D0D"
-        app:cnb_menuResource="@menu/bottom_nav_menu"
-        app:cnb_orientationMode="horizontal"
-
-
-        app:cnb_radius="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/iv_play"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bottom_nav_bar">
-
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-    </FrameLayout>
-
-    <RelativeLayout
-        android:id="@+id/iv_play"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:background="@drawable/drawable_bg"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav_bar"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_iv_play_bar"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttons_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.97">
 
 
-        <View
-            android:id="@+id/view"
+        <com.ismaeldivita.chipnavigation.ChipNavigationBar
+            android:id="@+id/bottom_nav_bar"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_alignParentBottom="true"
-            android:background="#000000"
-            android:visibility="visible" />
-    </RelativeLayout>
+            android:layout_height="55dp"
 
-    <ImageButton
-        android:id="@+id/iv_play_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/drawable_iv_play"
-        android:src="@drawable/play_button"
-        app:layout_constraintBottom_toBottomOf="@id/iv_play"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_play" />
-
-    <ImageButton
-        android:id="@+id/iv_next_button"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/drawable_iv_next_previous"
-        android:rotation="180"
-        android:src="@drawable/previous_button"
-        app:layout_constraintBottom_toBottomOf="@id/iv_play"
-        app:layout_constraintStart_toEndOf="@+id/iv_play_button"
-        app:layout_constraintTop_toTopOf="@id/iv_play" />
-
-    <TextView
-        android:id="@+id/iv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/alegreya_sans_light_italic"
-        android:text="FRIENDS"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_play"
+            android:background="@drawable/buttons_bg"
+            android:elevation="16dp"
+            android:foregroundGravity="center"
+            app:cnb_menuResource="@menu/bottom_nav_menu"
+            app:cnb_orientationMode="horizontal"
+            app:cnb_radius="30dp"
+            app:layout_constraintBottom_toBottomOf="@id/bottom_iv_play_bar"
+            app:layout_constraintLeft_toLeftOf="@id/bottom_iv_play_bar"
+            app:layout_constraintRight_toRightOf="@id/bottom_iv_play_bar"
 
 
-        app:layout_constraintStart_toStartOf="@+id/iv_author"
-        app:layout_constraintTop_toTopOf="@id/iv_play"
-        app:layout_constraintVertical_bias="0.22000003" />
+            >
 
-    <TextView
-        android:id="@+id/iv_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/alegreya_sans_light_italic"
-        android:text="Anne Marie and Marshmello"
-        android:textColor="#A38787"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_play"
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/black" />
+        </com.ismaeldivita.chipnavigation.ChipNavigationBar>
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.34"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_title"
-        app:layout_constraintVertical_bias="0.050000012" />
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/poster_view"
-       app:layout_constraintRight_toLeftOf="@id/iv_author"
-        app:layout_constraintTop_toTopOf="@id/iv_play"
-        app:layout_constraintBottom_toBottomOf="@id/iv_play"
-        app:layout_constraintLeft_toLeftOf="parent"
-        />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_iv"
+            android:layout_width="match_parent"
 
+            android:layout_height="55dp"
+
+            app:layout_constraintBottom_toTopOf="@id/bottom_nav_bar"
+            app:layout_constraintLeft_toLeftOf="@id/bottom_iv_play_bar"
+            app:layout_constraintRight_toRightOf="@id/bottom_iv_play_bar">
+
+
+            <ImageButton
+                android:id="@+id/iv_play"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/drawable_iv_play"
+                android:src="@drawable/play_button"
+                app:layout_constraintBottom_toBottomOf="@id/bottom_iv"
+                app:layout_constraintEnd_toStartOf="@+id/iv_next"
+                app:layout_constraintHorizontal_bias="0.98"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/bottom_iv" />
+
+            <ImageButton
+                android:id="@+id/iv_next"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/primary2"
+                android:rotation="180"
+                android:src="@drawable/previous_button"
+
+                app:layout_constraintBottom_toBottomOf="@id/bottom_iv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.97"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/bottom_iv" />
+
+            <TextView
+                android:id="@+id/iv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font3"
+                android:text="Friends"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@id/bottom_iv"
+                app:layout_constraintStart_toStartOf="@+id/iv_author"
+                app:layout_constraintTop_toTopOf="@id/bottom_iv"
+                app:layout_constraintVertical_bias="0.17000002" />
+
+            <TextView
+                android:id="@+id/iv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font3"
+                android:text="Anne Marie amd Marhsmello"
+                android:textColor="#806464"
+                android:textSize="13sp"
+                app:layout_constraintHorizontal_bias="0.81"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_iv"
+                app:layout_constraintRight_toLeftOf="@id/iv_play"
+                app:layout_constraintTop_toBottomOf="@id/iv_title" />
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/poster_view"
+                app:layout_constraintBottom_toBottomOf="@id/bottom_iv"
+                app:layout_constraintTop_toTopOf="@id/bottom_iv"
+                app:layout_constraintLeft_toLeftOf="@id/bottom_iv"
+                app:layout_constraintRight_toLeftOf="@id/iv_author"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
