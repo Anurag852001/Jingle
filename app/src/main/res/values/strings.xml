@@ -7,4 +7,8 @@
     <string name="now_playing">Now Playing</string>
     <string name="back_button_image">back_button_image</string>
     <string name="friends">Friends</string>
+    <string name="add_to_library">Add to Library</string>
+    <string name="delete">Delete</string>
+    <string name="create_playlist">Create playlist</string>
+    <string name="new_playlist">New Playlist</string>
 </resources>

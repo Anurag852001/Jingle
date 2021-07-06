@@ -11,6 +11,7 @@
         android:id="@+id/songs_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_scrollFlags="scroll|enterAlways"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,17 +20,16 @@
 
     <SearchView
         android:id="@+id/searchView"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttons_bg"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/primary_dark"
         android:iconifiedByDefault="false"
-
-        android:queryHint="Search song name etc"
+        android:queryHint="Search song"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/songs_list"
-        app:layout_constraintVertical_bias="0.01999998">
+        app:layout_constraintVertical_bias="0.0">
 
     </SearchView>
 

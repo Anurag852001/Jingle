@@ -1,15 +1,17 @@
 package com.example.jingle
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
+import android.app.Activity
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
+import android.view.*
+import android.widget.*
 
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.jingle.fragments.home
+import java.io.ByteArrayInputStream
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.system.measureNanoTime
 
 class SongListAdapter( private var items:ArrayList<SongInfo>,private val listener:SongClicked) : RecyclerView.Adapter<SongList>() {
 
@@ -26,8 +28,11 @@ class SongListAdapter( private var items:ArrayList<SongInfo>,private val listene
 
     override fun onBindViewHolder(holder: SongList, position: Int) {
         var currentItem=items[position]
-
+        val mmr=MediaMetadataRetriever()
         holder.title.text=currentItem.title.toString()
+        loadImage(mmr,position,holder.art,currentItem)
+        holder.author.text=currentItem.author
+
     }
 
     override fun getItemCount(): Int {
@@ -36,7 +41,10 @@ class SongListAdapter( private var items:ArrayList<SongInfo>,private val listene
 
 }
 class SongList(itemView: View): RecyclerView.ViewHolder(itemView){
-    val title:TextView=itemView.findViewById(R.id.textView)
+    val title:TextView=itemView.findViewById(R.id.TextView)
+    val art=itemView.findViewById<ImageView>(R.id.imageView)
+    val author=itemView.findViewById<TextView>(R.id.artist_name)
+
 
 }
 interface SongClicked{
@@ -44,4 +52,16 @@ interface SongClicked{
 
     }
 
+}
+private fun loadImage(mmr: MediaMetadataRetriever, position:Int, songImage:ImageView,curr:SongInfo)
+{
+    mmr.setDataSource(curr.url)
+    val artBytes: ByteArray? = mmr.embeddedPicture
+    if (artBytes != null) {
+        val image = ByteArrayInputStream(mmr.embeddedPicture)
+        val bm = BitmapFactory.decodeStream(image)
+        songImage.setImageBitmap(bm)
+    } else {
+        songImage.setImageResource(R.drawable.default_mini_cover)
+    }
 }

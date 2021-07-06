@@ -7,23 +7,75 @@
     android:paddingTop="2dp"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
+    android:paddingBottom="1dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:text="Item no"
-    android:fontFamily="@font/font3"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:background="@color/black"
-        android:padding="8dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_container"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/primary2"
         app:layout_constraintEnd_toEndOf="parent"
-
-
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/TextView"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:fontFamily="@font/amiko_semibold"
+            android:text="Song Name"
+
+
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/item_container"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@id/item_container"
+            app:layout_constraintVertical_bias="0.31" />
+
+        <TextView
+            android:id="@+id/artist_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/amiko_semibold"
+            android:text="Artist"
+            android:textColor="#BF9898"
+            android:textSize="11sp"
+
+            app:layout_constraintLeft_toLeftOf="@id/TextView"
+            app:layout_constraintTop_toBottomOf="@id/TextView" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/poster_view"
+            app:layout_constraintBottom_toBottomOf="@id/item_container"
+            app:layout_constraintHorizontal_bias="0.04"
+            app:layout_constraintLeft_toLeftOf="@id/item_container"
+            app:layout_constraintRight_toRightOf="@id/item_container"
+            app:layout_constraintTop_toTopOf="@id/item_container" />
+
+        <ImageButton
+            android:id="@+id/song_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/primary2"
+            android:src="@drawable/baseline_more_vert_white_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:showAsAction="ifRoom"
+            android:onClick="showPopup"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

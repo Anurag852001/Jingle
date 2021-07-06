@@ -3,16 +3,14 @@ package com.example.jingle.fragments
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.media.MediaMetadataRetriever
-import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.Layout
+import android.view.*
+import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import android.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -57,7 +55,47 @@ class home : Fragment(), SongClicked {
         recyclerView.layoutManager= LinearLayoutManager(thisContext)
         val adapter:SongListAdapter= SongListAdapter(displaylist,this)
         recyclerView.adapter=adapter
+        val Menu =(R.menu.item_menu_file)
+        val menu_button=view.findViewById<ImageButton>(R.id.song_menu)
+        val bottom_nav_menu=view.findViewById<View>(R.id.bottom_iv_play_bar)
+        var check_ScrollingUp = false
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    // Scrolling up
+                    if (check_ScrollingUp) {
+                        searchView.startAnimation(
+                            AnimationUtils.loadAnimation(
+                                context,
+                                R.anim.trans_up
+                            )
+                        )
+                        searchView.startAnimation(
+                            AnimationUtils.loadAnimation(
+                                context,
+                                R.anim.trans_up
+                            )
+                        )
+                        check_ScrollingUp = false
+                    }
+                } else {
+                    // User scrolls down
+                    if (!check_ScrollingUp) {
+                        searchView
+                            .startAnimation(
+                                AnimationUtils
+                                    .loadAnimation(context, R.anim.trans_down)
+                            )
+                        check_ScrollingUp = true
+                    }
+                }
+            }
 
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
 
 
         searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener {

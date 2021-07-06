@@ -3,6 +3,9 @@ package com.example.jingle
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuInflater
+import android.view.View
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.example.jingle.fragments.Library
 import com.example.jingle.fragments.Search
@@ -43,6 +46,13 @@ class MainActivity : AppCompatActivity(),SongClicked {
         transaction.replace(R.id.fragment_container, fragment)
         transaction.commit()
 
+    }
+
+    fun showPopup(view: View) {
+        val popup=PopupMenu(this,view)
+        val inflater:MenuInflater=popup.menuInflater
+        inflater.inflate(R.menu.item_menu_file,popup.menu)
+        popup.show()
     }
 
 

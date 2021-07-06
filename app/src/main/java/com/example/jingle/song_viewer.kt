@@ -9,10 +9,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.text.Layout
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toDrawable
 import java.io.ByteArrayInputStream
 import java.io.InputStream
+import kotlin.random.Random
 import kotlin.time.ExperimentalTime
 
 
@@ -52,6 +56,8 @@ class song_viewer : AppCompatActivity()  {
         val endTime=findViewById<TextView>(R.id.end_time)
         val songImage=findViewById<ImageView>(R.id.song_image)
         val mmr=MediaMetadataRetriever()
+        val background=findViewById<View>(R.id.view_song)
+        background.setBackgroundResource(generateResource())
 
         loadImage(mmr,position,songImage)
 
@@ -102,6 +108,7 @@ class song_viewer : AppCompatActivity()  {
 
             mp.prepare()
             loadImage(mmr,position,songImage)
+            background.setBackgroundResource(generateResource())
             seekBar.max=mp.duration
             startTime.text= startTime()
             endTime.text=endTime(mp.duration)
@@ -116,6 +123,7 @@ class song_viewer : AppCompatActivity()  {
             seekBar.progress=0
             mp.prepare()
             loadImage(mmr,position,songImage)
+            background.setBackgroundResource(generateResource())
             startTime.text= startTime()
             endTime.text=endTime(mp.duration)
             playbutton.setImageResource(R.drawable.pause_button)
@@ -198,7 +206,7 @@ class song_viewer : AppCompatActivity()  {
     private fun loadSongs() {
         val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val selection: String = MediaStore.Audio.Media.IS_MUSIC + "!=0"
-        val c = this.contentResolver.query(uri, null, selection, null, "TITLE ASC")
+        val c = this.contentResolver.query(uri, null, selection, null, null)
         if (c != null) {
             while (c.moveToNext()) {
                 val url = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DATA))
@@ -230,9 +238,23 @@ private fun loadImage(mmr: MediaMetadataRetriever, position:Int,songImage:ImageV
         val bm = BitmapFactory.decodeStream(image)
         songImage.setImageBitmap(bm)
     } else {
-        songImage.setImageDrawable(resources.getDrawable(R.drawable.poster_view))
+        songImage.setImageDrawable(resources.getDrawable(R.drawable.default_cover))
     }
 }
+
+
+    private fun generateResource():Int
+     {
+         val r= Random.nextInt(1,5)
+         when(r)
+        {
+             1-> return (R.drawable.one)
+             2->return (R.drawable.two)
+             3->return (R.drawable.three)
+             4->return (R.drawable.sdgs)
+             else-> return R.drawable.four
+        }
+    }
 
 
 }
