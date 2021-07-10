@@ -79,8 +79,8 @@
 
 
 
-            android:padding="8dp"
-            android:paddingTop="300dp"
+            android:padding="0dp"
+
 
             android:src="@drawable/poster_view" />
     </FrameLayout>
