@@ -11,15 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Jingle">
-        <activity android:name=".InsidePlaylistActivity"></activity>
-        <activity
-            android:name=".fragments.LibraryActivity"
-            android:label="@string/title_activity_library"
-            android:theme="@style/Theme.Jingle.NoActionBar" />
-        <activity
-            android:name=".ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/Theme.Jingle.NoActionBar" />
+        <activity android:name=".playlist2"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"></activity>
+
+        <activity android:name=".InsidePlaylistActivity" />
         <activity
             android:name=".song_viewer"
             android:launchMode="singleInstance"
@@ -37,6 +32,10 @@
             android:name=".MainActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

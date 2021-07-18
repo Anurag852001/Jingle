@@ -1,9 +1,11 @@
 package com.example.jingle
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
@@ -35,6 +37,9 @@ class MainActivity : AppCompatActivity(),SongClicked {
         }
 
 
+
+
+
     }
 
 
@@ -48,12 +53,7 @@ class MainActivity : AppCompatActivity(),SongClicked {
 
     }
 
-    fun showPopup(view: View) {
-        val popup=PopupMenu(this,view)
-        val inflater:MenuInflater=popup.menuInflater
-        inflater.inflate(R.menu.item_menu_file,popup.menu)
-        popup.show()
-    }
+
 
 
 }

@@ -11,20 +11,28 @@ import android.text.Layout
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.SearchView
+import android.widget.Toast
+import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jingle.*
+
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class home : Fragment(), SongClicked {
+class home : Fragment(), SongClicked,onMenuItemClicked {
 
-    private var listSongs= ArrayList<SongInfo>()
-    private var displaylist=ArrayList<SongInfo>()
+    companion object{
+        var flag=0
+        var topPosition=0
+    }
+    var listSongs = splashScreen.listSongs
+        private var displaylist=ArrayList<SongInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +47,8 @@ class home : Fragment(), SongClicked {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         val thisContext=view.getContext()
 
-        if(ContextCompat.checkSelfPermission(thisContext,android.Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)
-        {
-            loadSongs()
-        }
-        else requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),1)
+
+
         val searchView=view.findViewById<SearchView>(R.id.searchView)
 
 
@@ -53,7 +58,7 @@ class home : Fragment(), SongClicked {
         val recyclerView:RecyclerView=view.findViewById(R.id.songs_list)
         displaylist.addAll(listSongs)
         recyclerView.layoutManager= LinearLayoutManager(thisContext)
-        val adapter:SongListAdapter= SongListAdapter(displaylist,this)
+        val adapter:SongListAdapter= SongListAdapter(displaylist,this,this)
         recyclerView.adapter=adapter
         val Menu =(R.menu.item_menu_file)
         val menu_button=view.findViewById<ImageButton>(R.id.song_menu)
@@ -142,41 +147,8 @@ return view
 
 
 
-    private fun loadSongs() {
-        var uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-        var selection: String = MediaStore.Audio.Media.IS_MUSIC + "!=0"
-        var c = requireContext().contentResolver.query(uri, null, selection, null, null)
-        if (c != null) {
-            while (c.moveToNext()) {
-                var url = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DATA))
-                var author = c.getString((c.getColumnIndex(MediaStore.Audio.Media.ARTIST)))
-                var title = c.getString(c.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME))
-                var duration=c.getInt(c.getColumnIndex(MediaStore.Audio.Media.DURATION))
 
 
-                    listSongs.add(SongInfo(url, author, title,duration))
-
-
-            }
-        }
-
-
-
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if(grantResults[0]==PackageManager.PERMISSION_GRANTED && requestCode==1)
-        {
-            loadSongs()
-        }
-
-    }
 
     override fun onItemClicked(item: String,url:String,position: Int) {
         super.onItemClicked(item,url,position)
@@ -187,4 +159,38 @@ return view
         startActivity(intent)
     }
 
+    override fun onMenuItemClicked(position: Int,itemView: View) {
+
+
+            val popup= PopupMenu(requireContext(),itemView)
+            val inflater:MenuInflater=popup.menuInflater
+            inflater.inflate(R.menu.item_menu_file,popup.menu)
+
+
+        popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener{ item->
+                if(item.itemId==R.id.library_add ) {
+                addToLibrary(position)
+                }
+
+            true
+
+
+
+            })
+        popup.show()
+    }
+
+    private fun addToLibrary(position: Int): Boolean {
+        val intent =Intent(requireContext(),playlist2::class.java)
+    flag=1
+        topPosition=position
+        startActivity(intent)
+        return true
+
+    }
+
+
 }
+
+
+

@@ -11,13 +11,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jingle.fragments.Library
 
-class playlistAdapter (private var items:ArrayList<String>,private val listener:playlistItemClicked  ): RecyclerView.Adapter<playlist>(){
+class playlistAdapter (private var items2:ArrayList<ArrayList<SongInfo>>,private var items:ArrayList<String>,private val listener:PlaylistItemClicked  ): RecyclerView.Adapter<playlist>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): playlist {
         var view =
             LayoutInflater.from(parent.context).inflate(R.layout.playlist_list, parent, false)
-        return playlist(view)
+        val viewHolder = playlist(view)
+        view.setOnClickListener {
+        listener.onItemClicked(viewHolder.adapterPosition)
+    }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: playlist, position: Int) {
@@ -25,7 +29,7 @@ class playlistAdapter (private var items:ArrayList<String>,private val listener:
         holder.playlistName.text=currentItem
         holder.deleteButton.setOnClickListener{
             removeAt(position)
-
+                items2.removeAt(position)
 
         }
 
@@ -44,12 +48,11 @@ class playlistAdapter (private var items:ArrayList<String>,private val listener:
 
 }
 
-interface playlistItemClicked {
-    fun onItemClicked(){
+interface PlaylistItemClicked {
+    fun onItemClicked( position: Int)
 
-    }
+
 }
-
 
 class playlist(itemView: View): RecyclerView.ViewHolder(itemView) {
     var playlistName=itemView.findViewById<TextView>(R.id.playlist_name)
